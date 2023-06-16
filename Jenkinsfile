@@ -21,6 +21,18 @@ properties([
         choice(choices: ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2'], name: 'region')
         ])
         ])
+if (env.BRANCH_NAME == "main") {
+    region = "us-east-1"
+}
+
+else if (env.BRANCH_NAME == "qa") {
+    region = "us-east-2"
+}
+
+else if (env.BRANCH_NAME == "dev") {
+    region = "us-west-1"
+}
+
 
 podTemplate(cloud: 'kubernetes', label: 'packer', showRawYaml: false, yaml: template) {
     node("packer"){
@@ -30,7 +42,7 @@ podTemplate(cloud: 'kubernetes', label: 'packer', showRawYaml: false, yaml: temp
             withEnv(["AWS_REGION=${params.region}"]) {
             
             stage("Git Clone"){
-                git branch: 'main', url: 'https://github.com/kaizenacademy/jenkins-packer.git'
+                git branch: 'main', url: 'https://github.com/NazgulM/jenkins-parker.git'
             }
             
             stage("Packer"){
